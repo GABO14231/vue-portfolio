@@ -35,9 +35,8 @@ export default defineComponent({name: 'LoginPage', components: {Modal, FontAweso
         const message = ref('');
         const showPassword = ref(false);
         const input = ref({identifier: '', password: ''});
-
-        const togglePasswordVisibility = () => {showPassword.value = !showPassword.value;};
-        const clearMessage = () => {message.value = '';};
+        const togglePasswordVisibility = () => showPassword.value = !showPassword.value;
+        const clearMessage = () => message.value = '';
 
         const handleSubmit = async () =>
         {

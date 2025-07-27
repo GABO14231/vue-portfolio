@@ -32,9 +32,8 @@ export default defineComponent({name: 'NavbarComponent', props: {options: {type:
         const isVisible = ref(true);
         const isHome = ref(false);
         let lastScrollY = 0;
-
         const route = useRoute();
-        const checkRoute = () => {isHome.value = route.path === '/';};
+        const checkRoute = () => isHome.value = route.path === '/';
 
         const onWindowScroll = () =>
         {
@@ -58,8 +57,8 @@ export default defineComponent({name: 'NavbarComponent', props: {options: {type:
             window.addEventListener('scroll', onWindowScroll);
         });
 
-        onBeforeUnmount(() => {window.removeEventListener('scroll', onWindowScroll);});
-        watch(() => route.path, () => {checkRoute();});
+        onBeforeUnmount(() => window.removeEventListener('scroll', onWindowScroll));
+        watch(() => route.path, () => checkRoute());
         return {isVisible, isHome, handleClick};
     }
 });

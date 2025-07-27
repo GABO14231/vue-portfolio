@@ -68,8 +68,8 @@ export default defineComponent({name: 'RegisterPage', components: {Modal, FontAw
             }
         };
 
-        const handleModalClose = () => {message.value = '';};
-        const togglePasswordVisibility = () => {showPassword.value = !showPassword.value;};
+        const handleModalClose = () => message.value = '';
+        const togglePasswordVisibility = () => showPassword.value = !showPassword.value;
 
         const previousPage = () =>
         {
