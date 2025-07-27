@@ -1,0 +1,73 @@
+<template>
+    <div class="overlay" @click.stop v-if="message">
+        <div class="modal">
+              <div class="content">
+                  <p>{{message}}</p>
+                  <div class="button-group">
+                      <button v-for="(button, index) in buttons" :key="index" @click="button.action()">
+                          {{button.label}}</button>
+                  </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import {defineComponent} from 'vue';
+export default defineComponent({name: 'ModalComponent', props: {message: {type: String,  default: null},
+    buttons: {type: Array, default: () => []}}});
+</script>
+
+<style scoped>
+.overlay
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal
+{
+    background: #1a1c20;
+    padding: 15px;
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 1000;
+}
+
+.content p
+{
+    color: #dadada;
+    font-size: 20px;
+}
+
+.button-group
+{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.button-group button
+{
+    padding: 8px 12px;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+.button-group button:hover {background-color: #357ABD;}
+</style>
