@@ -57,7 +57,7 @@ export default defineComponent({name: 'RegisterPage', components: {Modal, FontAw
                 if (response.status === 'success')
                 {
                     message.value = 'Registration successful!';
-                    router.push('/login');
+                    setTimeout(() => router.push('/login'), 2000);
                 }
                 else message.value = response.data && response.data.message ? response.data.message : 'Registration failed.';
             }

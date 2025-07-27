@@ -43,11 +43,7 @@ export default defineComponent({name: 'LoginPage', components: {Modal, FontAweso
             try
             {
                 const response = await authService.login(input.value.identifier, input.value.password);
-                if (response.status === 'success')
-                {
-                    message.value = response.message;
-                    router.push('/dashboard');
-                }
+                if (response.status === 'success') router.push('/dashboard');
                 else message.value = response.message;
             }
             catch (error) {message.value = error.message;}

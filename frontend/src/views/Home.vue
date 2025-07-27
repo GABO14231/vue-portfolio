@@ -26,11 +26,9 @@ export default defineComponent({name: 'HomePage', components: {Navbar},
 
         const handleLogout = async () =>
         {
-            console.log("Logging out...");
             try
             {
-                const response = await authService.logout();
-                console.log(response.message);
+                await authService.logout();
                 router.push('/');
             }
             catch (err) {console.error(`Logout failed: ${err}`);}
@@ -39,8 +37,8 @@ export default defineComponent({name: 'HomePage', components: {Navbar},
         const setHomeOptions = () =>
         {
             if (user.value) homeOptions.value = [{label: "Portfolio", path: "/dashboard"},
-                {label: "Settings", path: "/profile"}, {label: "Logout", method: handleLogout}];
-            else homeOptions.value = [{label: "Login", path: "/login"}, {label: "Register", path: "/register"}];
+                {label: "Settings", path: "/profile"}, {label: "Log Out", method: handleLogout}];
+            else homeOptions.value = [{label: "Log In", path: "/login"}, {label: "Register", path: "/register"}];
         };
 
         onMounted(() =>

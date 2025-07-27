@@ -62,7 +62,7 @@ export default defineComponent({name: 'DeleteProfilePage', components: {Modal, F
                 }
 
                 const response = await profileService.deleteProfile(password.value, user.value.id);
-                message.value = response.message;
+                message.value = 'User deleted successfully.';
                 if (response.status === 'success')
                 {
                     await authService.logout();
@@ -152,6 +152,7 @@ export default defineComponent({name: 'DeleteProfilePage', components: {Modal, F
     cursor: pointer;
     transition: background 0.3s ease;
 }
+.deleteButton:hover {background-color: #d90303;}
 
 .cancelButton
 {

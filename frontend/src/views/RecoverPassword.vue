@@ -151,6 +151,7 @@ export default defineComponent({name: 'RecoverPasswordPage', components: {Modal,
 }
 
 .cancelButton {margin-top: 10px;}
+.submitButton:hover, .cancelButton:hover {background-color: #357ABD;}
 .recover-password-page .error
 {
     color: #F44336;

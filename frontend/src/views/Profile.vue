@@ -72,28 +72,26 @@ export default defineComponent({name: 'ProfilePage', components: {Navbar, Modal,
         
         const handleLogout = async () =>
         {
-          console.log("Logging out...");
-          try
-          {
-              const response = await authService.logout();
-              console.log(response.message);
-              router.push('/login');
-          }
-          catch (err)
-          {
-              console.error(`Logout failed: ${err}`);
-              message.value = err.message || "Logout failed.";
-              showMessageModal.value = true;
-          }
+            try
+            {
+                await authService.logout();
+                router.push('/');
+            }
+            catch (err)
+            {
+                console.error(`Logout failed: ${err}`);
+                message.value = "Logout failed.";
+                showMessageModal.value = true;
+            }
         };
-        const navbarOptions = ref([{label: "Portfolio", path: "/dashboard"},
-            {label: "Settings", path: "/profile"}, {label: "Logout", method: handleLogout}]);
+        const navbarOptions = ref([{label: "Home", path: "/"}, {label: "Portfolio", path: "/dashboard"},
+            {label: "Log Out", method: handleLogout}]);
 
         const togglePasswordVisibility = (field) => passwordVisibility[field] = !passwordVisibility[field];
         const closeModal = () =>
         {
-          message.value = '';
-          showMessageModal.value = false;
+            message.value = '';
+            showMessageModal.value = false;
         };
 
         const confirmUpdate = () =>
@@ -265,6 +263,7 @@ export default defineComponent({name: 'ProfilePage', components: {Navbar, Modal,
     transition: background 0.3s ease;
 }
 
+.deleteButton:hover {background-color: #d90303;}
 .backupButton:hover, .submitButton:hover {background-color: #357ABD;}
 .profile-page hr
 {

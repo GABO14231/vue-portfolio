@@ -36,7 +36,7 @@ const routes =
                 });
             });
             if (!authService.isAuthenticated()) next();
-            else next('/dashboard');
+            else next('/');
         }
     },
     {
@@ -62,25 +62,38 @@ const routes =
             });
 
             if (!authService.isAuthenticated()) next();
-            else next('/dashboard');
+            else next('/');
         },
     },
+    {path: '/profile', component: ProfilePage, meta: {requiresAuth: true}},
+    {path: '/delprofile', component: DeleteProfilePage, meta: {requiresAuth: true}},
     {
-        path: '/profile',
-        component: ProfilePage,
-        meta: {requiresAuth: true}
+        path: '/recoverpass',
+        component: RecoverPasswordPage,
+        beforeEnter: async (to, from, next) =>
+        {
+            await new Promise(resolve =>
+            {
+                if (authService.authInitialized.value)
+                {
+                    resolve(true);
+                    return;
+                }
+                const unwatch = watch(authService.authInitialized, (initialized) =>
+                {
+                    if (initialized)
+                    {
+                        unwatch();
+                        resolve(true);
+                    }
+                });
+            });
+
+            if (!authService.isAuthenticated()) next();
+            else next('/');
+        }
     },
-    {
-        path: '/delprofile',
-        component: DeleteProfilePage,
-        meta: { requiresAuth: true }
-    },
-    {path: '/recoverpass', component: RecoverPasswordPage},
-    {
-        path: '/dashboard',
-        component: Dashboard,
-        meta: {requiresAuth: true}
-    },
+    {path: '/dashboard', component: Dashboard, meta: {requiresAuth: true}}
 ];
 
 const router = createRouter({history: createWebHistory(), routes});
