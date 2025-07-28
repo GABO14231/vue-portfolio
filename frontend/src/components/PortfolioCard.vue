@@ -13,13 +13,15 @@
             </div>
             <div class="tab-content">
                 <div v-if="item.activeTab === 'images'" class="slider-container">
-                    <button @click="prevSlide('images')" class="slider-arrow left-arrow">&lt;</button>
+                    <button v-if="item.images && item.images.length > 1" @click="prevSlide('images')"
+                        class="slider-arrow left-arrow">&lt;</button>
                     <img :src="item.images[item.currentImageIndex]"
                         :alt="item.title + ' image ' + (item.currentImageIndex + 1)" class="slider-image"
                         onerror="this.onerror=null;
                         this.src='/src/assets/placeholder.jpg';"
                     />
-                    <button @click="nextSlide('images')" class="slider-arrow right-arrow">&gt;</button>
+                    <button v-if="item.images && item.images.length > 1" @click="nextSlide('images')"
+                        class="slider-arrow right-arrow">&gt;</button>
                 </div>
                 <div v-if="item.activeTab === 'videos'" class="video-container">
                     <div v-if="item.videos">
@@ -28,9 +30,11 @@
                     <p v-else>No videos available for this project.</p>
                 </div>
                 <div v-if="item.activeTab === 'code'" class="slider-container">
-                    <button @click="prevSlide('code')" class="slider-arrow left-arrow">&lt;</button>
+                    <button v-if="item.codeSnippets && item.codeSnippets.length > 1"
+                        @click="prevSlide('code')" class="slider-arrow left-arrow">&lt;</button>
                     <pre class="code-snippet"><code>{{item.codeSnippets[item.currentCodeIndex].code}}</code></pre>
-                    <button @click="nextSlide('code')" class="slider-arrow right-arrow">&gt;</button>
+                    <button v-if="item.codeSnippets && item.codeSnippets.length > 1"
+                        @click="nextSlide('code')" class="slider-arrow right-arrow">&gt;</button>
                     <p class="code-language">Language: {{item.codeSnippets[item.currentCodeIndex].language}}</p>
                 </div>
             </div>
