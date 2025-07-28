@@ -17,6 +17,7 @@
                         class="slider-arrow left-arrow">&lt;</button>
                     <img :src="item.images[item.currentImageIndex]"
                         :alt="item.title + ' image ' + (item.currentImageIndex + 1)" class="slider-image"
+                        @click="$emit('zoom-image', item.images[item.currentImageIndex])"
                         onerror="this.onerror=null;
                         this.src='/src/assets/placeholder.jpg';"
                     />
@@ -46,8 +47,8 @@
 <script>
 import {defineComponent, reactive} from 'vue';
 
-export default defineComponent({name: 'PortfolioCard', props: {item: {type: Object, required: true}},
-    setup(props)
+export default defineComponent({name: 'PortfolioCard', props: {item: {type: Object, required: true}}, emits: ['zoom-image'],
+    setup(props, {emit})
     {
         const item = reactive(props.item);
         const prevSlide = (type) =>
@@ -80,6 +81,7 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
     justify-content: space-between;
     transition: transform 0.2s ease-in-out;
     overflow: hidden;
+    position: relative;
 }
 
 .portfolio-card:hover {transform: translateY(-5px);}
@@ -139,7 +141,8 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
     font-weight: bold;
 }
 
-.tab-content {
+.tab-content
+{
     padding: 0;
     background-color: #1f2023;
     min-height: 250px;
@@ -165,9 +168,10 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
 .slider-image
 {
     max-width: 100%;
-    max-height: 200px;
+    max-height: 280px;
     object-fit: contain;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .slider-arrow
@@ -206,15 +210,15 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
 {
     background-color: #2a2c30;
     color: #dadada;
-    padding: 10px 15px;
+    padding: 20px;
     border-radius: 5px;
     overflow-x: auto;
     font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
     font-size: 0.85em;
     white-space: pre-wrap;
-    word-break: break-all;
-    width: 100%;
-    max-height: 200px;
+    word-break: break-word;
+    width: calc(100% - 40px);
+    max-height: 280px;
     box-sizing: border-box;
 }
 

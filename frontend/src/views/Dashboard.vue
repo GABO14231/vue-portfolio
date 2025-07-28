@@ -5,9 +5,17 @@
             <div class="portfolio-section">
                 <h2>My Projects</h2>
                 <div class="portfolio-grid">
-                    <PortfolioCard v-for="item in portfolioItems" :key="item.id" :item="item"></PortfolioCard>
+                    <PortfolioCard v-for="item in portfolioItems" :key="item.id" :item="item" @zoom-image="handleZoomImage"></PortfolioCard>
                 </div>
             </div>
+            <transition name="fade">
+                <div v-if="isZoomed" class="image-zoom-overlay" @click="closeZoom">
+                    <div class="zoomed-image-container" @click.stop>
+                        <img :src="zoomedImageSrc" alt="Zoomed Image" class="zoomed-image" />
+                        <button class="close-zoom-button" @click="closeZoom">X</button>
+                    </div>
+                </div>
+            </transition>
             <div class="graphs-section">
                 <h3>Skills Overview</h3>
                 <div class="chart-container"><canvas id="skillsBarChart"></canvas></div>
@@ -36,34 +44,32 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
         const username = ref('User');
         const message = ref('');
         const modalButtons = ref([]);
+        const isZoomed = ref(false);
+        const zoomedImageSrc = ref('');
         let skillsBarChart = null;
         let skillsPieChart = null;
 
         const portfolioItems = ref([
             {
                 id: '1',
-                title: 'E-commerce Platform',
-                description: 'A full-stack e-commerce solution with user authentication, product catalog, and shopping cart functionality.',
-                link: 'https://github.com/yourusername/ecommerce-platform',
+                title: 'React Notepad',
+                description: 'A personal notepad made using React.js.',
+                link: 'https://github.com/GABO14231/react-notepad',
                 activeTab: 'images',
                 currentImageIndex: 0,
                 currentCodeIndex: 0,
-                images: [
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=E-commerce+Screenshot+1',
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=E-commerce+Screenshot+2',
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=E-commerce+Screenshot+3'
-                ],
+                images: ['src/assets/image1.png', 'src/assets/image2.png'],
                 videos: '',
                 codeSnippets: [
-                    { language: 'JavaScript', code: 'console.log("Welcome to our store!");\n// Example product fetching logic' },
-                    { language: 'HTML', code: '<body>\n  <nav>...</nav>\n  <main>\n    <h1>Products</h1>\n    <div id="product-list"></div>\n  </main>\n</body>' }
+                    {language: 'JSX', code: 'const handleLogout = () =>\n{\n   console.log("Logging out...");\n   onLogout();\n};\n'},
+                    {language: 'HTML', code: '<head>\n  <meta charset="UTF-8" />\n  <link rel="icon" type="image/x-icon" href="/favicon.ico" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>React Notepad</title>\n</head>'}
                 ]
             },
             {
                 id: '2',
                 title: 'Real-time Chat Application',
                 description: 'A real-time chat application built with WebSockets, allowing multiple users to communicate instantly.',
-                link: 'https://github.com/yourusername/chat-app',
+                link: 'https://github.com/GABO14231/angular-clocks',
                 activeTab: 'images',
                 currentImageIndex: 0,
                 currentCodeIndex: 0,
@@ -239,7 +245,21 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
             }, {immediate: true});
             nextTick(() => renderSkillsCharts());
         });
-        return {username, dashboardOptions, message, modalButtons, portfolioItems, handleLogout, clearMessage};
+
+        const handleZoomImage = (src) =>
+        {
+            zoomedImageSrc.value = src;
+            isZoomed.value = true;
+        };
+
+        const closeZoom = () =>
+        {
+            isZoomed.value = false;
+            zoomedImageSrc.value = '';
+        };
+
+        return {username, dashboardOptions, message, modalButtons, portfolioItems, handleLogout, clearMessage,
+            isZoomed, zoomedImageSrc, handleZoomImage, closeZoom};
     }
 });
 </script>
@@ -247,7 +267,7 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
 <style scoped>
 .dashboard-container
 {
-    max-width: 1200px;
+    max-width: 1450px;
     margin: 80px auto 20px auto;
     padding: 20px;
     background-color: #2a2c30;
@@ -281,7 +301,7 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
 .portfolio-grid
 {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(450px, 2fr));
     gap: 30px;
     justify-content: center;
     padding: 10px;
@@ -309,6 +329,75 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
 }
 
 .pie-chart-container {max-width: 400px;}
+.fade-enter-active, .fade-leave-active {transition: opacity 0.3s ease;}
+.fade-enter-from, .fade-leave-to {opacity: 0;}
+
+.image-zoom-overlay
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: opacity 0.3s ease;
+}
+
+.zoomed-image-container
+{
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1f2023;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    transform: scale(1);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+
+.zoomed-image
+{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.close-zoom-button
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    z-index: 1001;
+}
+
+.close-zoom-button:hover {background-color: #357ABD;}
+.fade-enter-active .zoomed-image-container, .fade-leave-active .zoomed-image-container {transform: scale(1);}
+.fade-enter-from .zoomed-image-container, .fade-leave-to .zoomed-image-container {transform: scale(0.8);}
+
 @media (max-width: 768px)
 {
     .dashboard-container
