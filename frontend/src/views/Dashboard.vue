@@ -58,30 +58,25 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
                 activeTab: 'images',
                 currentImageIndex: 0,
                 currentCodeIndex: 0,
-                images: ['src/assets/image1.png', 'src/assets/image2.png'],
-                videos: '',
-                codeSnippets: [
-                    {language: 'JSX', code: 'const handleLogout = () =>\n{\n   console.log("Logging out...");\n   onLogout();\n};\n'},
-                    {language: 'HTML', code: '<head>\n  <meta charset="UTF-8" />\n  <link rel="icon" type="image/x-icon" href="/favicon.ico" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>React Notepad</title>\n</head>'}
-                ]
+                images: ['src/assets/image1.png', 'src/assets/image2.png', 'src/assets/image3.png'],
+                video: 'src/assets/video1.mp4',
+                codeSnippets: [{language: 'JSX', code: 'const handleLogout = () =>\n{\n   console.log("Logging out...");\n   onLogout();\n};\n'},
+                    {language: 'HTML', code: '<head>\n  <meta charset="UTF-8" />\n  <link rel="icon" type="image/x-icon" href="/favicon.ico" />\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>React Notepad</title>\n</head>'},
+                    {language: 'JavaScript', code: 'app.listen(port, () => console.log(`Server running on port ${port}`));'}]
             },
             {
                 id: '2',
-                title: 'Real-time Chat Application',
-                description: 'A real-time chat application built with WebSockets, allowing multiple users to communicate instantly.',
+                title: 'Angular Clocks',
+                description: 'Visualize time in 10 unique ways, made with Angular.',
                 link: 'https://github.com/GABO14231/angular-clocks',
                 activeTab: 'images',
                 currentImageIndex: 0,
                 currentCodeIndex: 0,
-                images: [
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=Chat+App+Screenshot+1',
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=Chat+App+Screenshot+2'
-                ],
-                videos: ['https://www.w3schools.com/html/mov_bbb.mp4'], // Example video URL
-                codeSnippets: [
-                    { language: 'Python', code: 'def send_message(user, message):\n  # Logic to send message via WebSocket' },
-                    { language: 'JavaScript', code: 'socket.onmessage = (event) => {\n  const msg = JSON.parse(event.data);\n  // Append message to chat window\n};' }
-                ]
+                images: ['src/assets/image4.png', 'src/assets/image5.png', 'src/assets/image6.png'],
+                video: ['https://www.w3schools.com/html/mov_bbb.mp4'],
+                codeSnippets: [{language: 'TypeScript', code: "import {bootstrapApplication} from '@angular/platform-browser';\nimport {App} from './app/app';\nimport {appConfig} from './app/app.config';\n\nbootstrapApplication(App, appConfig).catch((err) => console.error(err));"},
+                    {language: 'CSS', code: "body\n{\n    background-color: #1f2023;\n    color: #dadada;\n}"},
+                    {language: "JSON", code: '"references": [{"path": "./tsconfig.app.json"}, {"path": "./tsconfig.spec.json"}]'}]
             },
             {
                 id: '3',
@@ -94,7 +89,7 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
                 images: [
                     'https://placehold.co/600x400/4A90E2/ffffff?text=ML+Deployment+Screenshot+1'
                 ],
-                videos: [],
+                video: [],
                 codeSnippets: [
                     { language: 'Python', code: 'from flask import Flask, request, jsonify\napp = Flask(__name__)\n@app.route("/predict", methods=["POST"])\ndef predict():\n  # Prediction logic\n  return jsonify(result)' }
                 ]
@@ -111,7 +106,7 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
                     'https://placehold.co/600x400/4A90E2/ffffff?text=Blog+Site+Screenshot+1',
                     'https://placehold.co/600x400/4A90E2/ffffff?text=Blog+Site+Screenshot+2'
                 ],
-                videos: [],
+                video: [],
                 codeSnippets: [
                     { language: 'Vue.js', code: '<template>\n  <div class="post-card">\n    <h2>{{ post.title }}</h2>\n    <p>{{ post.excerpt }}</p>\n  </div>\n</template>' },
                     { language: 'CSS', code: '.post-card {\n  border: 1px solid #eee;\n  padding: 15px;\n  margin-bottom: 20px;\n}' }
@@ -130,7 +125,7 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
                     'https://placehold.co/600x400/4A90E2/ffffff?text=Data+Viz+Screenshot+2',
                     'https://placehold.co/600x400/4A90E2/ffffff?text=Data+Viz+Screenshot+3'
                 ],
-                videos: [],
+                video: [],
                 codeSnippets: [
                     { language: 'JavaScript', code: 'd3.select("body").append("svg")\n  .attr("width", 500).attr("height", 300)\n  .append("rect")\n  .attr("x", 0).attr("y", 0)\n  .attr("width", 100).attr("height", 50);' }
                 ]
