@@ -219,7 +219,7 @@ export default defineComponent({name: 'ProfilePage', components: {Navbar, Modal,
 .profile-page
 {
     max-width: 600px;
-    margin: 90px auto;
+    margin: 80px auto;
     padding: 20px;
     background-color: #2a2c30;
     border-radius: 8px;

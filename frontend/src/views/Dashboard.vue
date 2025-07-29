@@ -3,7 +3,7 @@
         <Navbar :options="dashboardOptions"></Navbar>
         <div class="dashboard-container">
             <div class="portfolio-section">
-                <h2>My Projects</h2>
+                <h1>My Projects</h1>
                 <div class="portfolio-grid">
                     <PortfolioCard v-for="item in portfolioItems" :key="item.id" :item="item" @zoom-image="handleZoomImage"></PortfolioCard>
                 </div>
@@ -49,7 +49,8 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
         let skillsBarChart = null;
         let skillsPieChart = null;
 
-        const portfolioItems = ref([
+        const portfolioItems = ref
+        ([
             {
                 id: '1',
                 title: 'React Notepad',
@@ -73,26 +74,24 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
                 currentImageIndex: 0,
                 currentCodeIndex: 0,
                 images: ['src/assets/image4.png', 'src/assets/image5.png', 'src/assets/image6.png'],
-                video: ['https://www.w3schools.com/html/mov_bbb.mp4'],
+                video: 'src/assets/video2.mp4',
                 codeSnippets: [{language: 'TypeScript', code: "import {bootstrapApplication} from '@angular/platform-browser';\nimport {App} from './app/app';\nimport {appConfig} from './app/app.config';\n\nbootstrapApplication(App, appConfig).catch((err) => console.error(err));"},
                     {language: 'CSS', code: "body\n{\n    background-color: #1f2023;\n    color: #dadada;\n}"},
                     {language: "JSON", code: '"references": [{"path": "./tsconfig.app.json"}, {"path": "./tsconfig.spec.json"}]'}]
             },
             {
                 id: '3',
-                title: 'Machine Learning Model Deployment',
-                description: 'Deployed a predictive machine learning model as a web service using Flask and Docker.',
-                link: 'https://github.com/yourusername/ml-deployment',
+                title: 'Music Player',
+                description: 'A Web Music Player app that uses IndexedDB to store music data locally.',
+                link: 'https://github.com/GABO14231/music-player',
                 activeTab: 'images',
                 currentImageIndex: 0,
                 currentCodeIndex: 0,
-                images: [
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=ML+Deployment+Screenshot+1'
-                ],
-                video: [],
-                codeSnippets: [
-                    { language: 'Python', code: 'from flask import Flask, request, jsonify\napp = Flask(__name__)\n@app.route("/predict", methods=["POST"])\ndef predict():\n  # Prediction logic\n  return jsonify(result)' }
-                ]
+                images: ['src/assets/image7.png', 'src/assets/image8.png', 'src/assets/image9.png'],
+                video: 'src/assets/video3.mp4',
+                codeSnippets: [{language: 'JavaScript', code: "import * as musicMetadata from 'music-metadata';\nwindow.musicMetadata = musicMetadata;"},
+                    {language: 'HTML', code: '<section class="cover-art">\n    <img id="album-art" src="assets/placeholder.png" alt="Cover Art">\n</section>'},
+                    {language: 'CSS', code: '@keyframes fadeIn\n{\n    from {opacity: 0;}\n    to {opacity: 1;}\n}'}]
             },
             {
                 id: '4',
@@ -292,7 +291,7 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
     padding-top: 20px;
 }
 
-.portfolio-section h2, .graphs-section h3 {color: #4A90E2;}
+.portfolio-section h1, .graphs-section h3 {color: #4A90E2;}
 .portfolio-grid
 {
     display: grid;

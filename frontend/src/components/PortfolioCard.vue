@@ -6,8 +6,8 @@
             <div class="tab-buttons">
                 <button :class="{'tab-button': true, 'active': item.activeTab === 'images'}"
                     @click="item.activeTab = 'images'">Images</button>
-                <button :class="{'tab-button': true, 'active': item.activeTab === 'videos'}"
-                    @click="item.activeTab = 'videos'">Videos</button>
+                <button :class="{'tab-button': true, 'active': item.activeTab === 'video'}"
+                    @click="item.activeTab = 'video'">Video</button>
                 <button :class="{'tab-button': true, 'active': item.activeTab === 'code'}"
                     @click="item.activeTab = 'code'">Code</button>
             </div>
@@ -26,11 +26,11 @@
                             class="slider-image" @click="$emit('zoom-image', item.images[item.currentImageIndex])"
                             onerror="this.onerror=null; this.src='/src/assets/placeholder.jpg';"/>
                     </div>
-                    <div v-else-if="item.activeTab === 'videos'" class="video-container" key="video-content">
+                    <div v-else-if="item.activeTab === 'video'" class="video-container" key="video-content">
                         <div v-if="item.video">
                             <video :src="item.video" controls class="project-video">Your browser does not support the video tag.</video>
                         </div>
-                        <p v-else>No videos available for this project.</p>
+                        <p v-else>No video available for this project.</p>
                     </div>
                     <div v-else-if="item.activeTab === 'code'" class="slider-content-wrapper" :key="'code-' + item.currentCodeIndex">
                         <pre class="code-snippet"><code>{{item.codeSnippets[item.currentCodeIndex].code}}</code></pre>
