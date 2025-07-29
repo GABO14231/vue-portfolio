@@ -47,17 +47,21 @@ export default defineComponent({name: 'RecoverPasswordPage', components: {Modal,
         const toggleNewPasswordVisibility = () => showNewPassword.value = !showNewPassword.value;
         const toggleConfirmPasswordVisibility = () => showConfirmPassword.value = !showConfirmPassword.value;
 
+        const validateInput = () =>
+        {
+            if (((newPassword.value !== "") && (confirmPassword.value === "")) || ((confirmPassword.value !== "") && (newPassword.value === ""))) return "Please enter your new password twice."
+            if ((newPassword.value.length < 6) || (confirmPassword.value.length < 6)) return "Password must be at least 6 characters.";
+            if (newPassword !== confirmPassword) return "The passwords do not match."
+
+            return "";
+        };
+
         const handleRecovery = async () =>
         {
-            if (newPassword.value !== confirmPassword.value)
+            const validationError = validateInput();
+            if (validationError)
             {
-                message.value = 'New password and confirm password do not match.';
-                return;
-            }
-
-            if (!code.value || !newPassword.value)
-            {
-                message.value = 'Please enter both the recovery code and a new password.';
+                message.value = validationError;
                 return;
             }
 

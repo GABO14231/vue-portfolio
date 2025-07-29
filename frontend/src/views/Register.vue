@@ -38,16 +38,29 @@ export default defineComponent({name: 'RegisterPage', components: {Modal, FontAw
         const message = ref('');
         const showPassword = ref(false);
 
+        const validateInput = () =>
+        {
+            if (!input.value.username || !input.value.email || !input.value.password || !input.value.first_name ||
+                !input.value.last_name) return "All fields are required.";
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+            if (!input.value.email.includes("@")) return "Email must contain '@'.";
+            if (!emailRegex.test(input.value.email)) return "Invalid email format (check domain part).";
+
+            const usernameRegex = /^[a-zA-Z0-9_]{3,}$/;
+            if (input.value.username.length < 3) return "Username must be at least 3 characters.";
+            if (!usernameRegex.test(input.value.username)) return "Username can only contain letters, numbers, and underscores.";
+            if (input.value.password.length < 6) return "Password must be at least 6 characters.";
+
+            return "";
+        };
+
         const handleSubmit = async () =>
         {
-            if (!input.username || !input.email || !input.password)
+            const validationError = validateInput();
+            if (validationError)
             {
-                message.value = 'Please fill in all required fields.';
-                return;
-            }
-            if (input.password.length < 6)
-            {
-                message.value = 'Password must be at least 6 characters long.';
+                message.value = validationError;
                 return;
             }
 

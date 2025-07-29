@@ -37,9 +37,36 @@ export default defineComponent({name: 'LoginPage', components: {Modal, FontAweso
         const input = ref({identifier: '', password: ''});
         const togglePasswordVisibility = () => showPassword.value = !showPassword.value;
         const clearMessage = () => message.value = '';
+        const validateInput = () =>
+        {
+            if (!input.value.identifier || !input.value.password) return "Both fields are required.";
+            const isEmail = input.value.identifier.includes(".") || input.value.identifier.includes("@");
+
+            if (isEmail)
+            {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+                if (!input.value.identifier.includes("@")) return "Email must contain '@'.";
+                if (!emailRegex.test(input.value.identifier)) return "Invalid email format (check domain part).";
+            }
+            else
+            {
+                const usernameRegex = /^[a-zA-Z0-9_]{3,}$/;
+                if (input.value.identifier.length < 3) return "Username must be at least 3 characters.";
+                if (!usernameRegex.test(input.value.identifier)) return "Username can only contain letters, numbers, and underscores.";
+            }
+
+            if (input.value.password.length < 6) return "Password must be at least 6 characters.";
+            return "";
+        };
 
         const handleSubmit = async () =>
         {
+            const validationError = validateInput();
+            if (validationError)
+            {
+                message.value = validationError;
+                return;
+            }
             try
             {
                 const response = await authService.login(input.value.identifier, input.value.password);

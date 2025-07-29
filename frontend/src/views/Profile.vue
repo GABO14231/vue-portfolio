@@ -23,10 +23,10 @@
                 </button>
             </div>
             <div class="password-wrapper">
-                <input :type="passwordVisibility.confirmNewPassword ? 'text' : 'password'" name="confirmNewPassword"
-                    placeholder="Confirm New Password" v-model="form.confirmNewPassword" />
-                <button type="button" @click="togglePasswordVisibility('confirmNewPassword')" class="toggle-password">
-                    <font-awesome-icon :icon="passwordVisibility.confirmNewPassword ? 'eye-slash' : 'eye'" />
+                <input :type="passwordVisibility.confirmPassword ? 'text' : 'password'" name="confirmPassword"
+                    placeholder="Confirm New Password" v-model="form.confirmPassword" />
+                <button type="button" @click="togglePasswordVisibility('confirmPassword')" class="toggle-password">
+                    <font-awesome-icon :icon="passwordVisibility.confirmPassword ? 'eye-slash' : 'eye'" />
                 </button>
             </div>
             <button class="submitButton" type="submit">Update Profile</button>
@@ -66,9 +66,30 @@ export default defineComponent({name: 'ProfilePage', components: {Navbar, Modal,
         const showConfirmModal = ref(false);
         const confirmModalConfig = reactive({message: '', buttons: [],});
         const form = reactive({username: '', email: '', first_name: '', last_name: '', currentPassword: '',
-            newPassword: '', confirmNewPassword: '',code: '',});
-        const passwordVisibility = reactive({currentPassword: false, newPassword: false, confirmNewPassword: false,
-            backupCode: false,});
+            newPassword: '', confirmPassword: '', code: '',});
+        const passwordVisibility = reactive({currentPassword: false, newPassword: false, confirmPassword: false,
+            backupCode: false});
+
+        const validateInput = () =>
+        {
+            const {username, email, currentPassword, newPassword, confirmPassword} = form;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+            if (!email.includes("@")) return "Email must contain '@'.";
+            if (!emailRegex.test(email)) return "Invalid email format (check domain part).";
+
+            const usernameRegex = /^[a-zA-Z0-9_]{3,}$/;
+            if (username.length < 3) return "Username must be at least 3 characters.";
+            if (!usernameRegex.test(username)) return "Username can only contain letters, numbers, and underscores.";
+            if ((currentPassword !== '') || (newPassword !== '') || (confirmPassword !== ''))
+            {
+                if (((currentPassword === "") && (confirmPassword !== "")) || ((currentPassword === "") && (newPassword !== ""))) return "Please insert your current password."
+                if (((newPassword !== "") && (confirmPassword === "")) || ((confirmPassword !== "") && (newPassword === ""))) return "Please enter your new password twice."
+                if ((currentPassword.length < 6) || (newPassword.length < 6) || (confirmPassword.length < 6)) return "Password must be at least 6 characters.";
+                if (newPassword !== confirmPassword) return "The passwords do not match."
+                if ((newPassword === confirmPassword) && (confirmPassword === currentPassword)) return "You are using your current password. Please use a new one."
+            }
+            return "";
+        };
         
         const handleLogout = async () =>
         {
@@ -96,13 +117,6 @@ export default defineComponent({name: 'ProfilePage', components: {Navbar, Modal,
 
         const confirmUpdate = () =>
         {
-            if (form.newPassword && form.newPassword !== form.confirmNewPassword)
-            {
-                message.value = "New password and confirm password do not match.";
-                showMessageModal.value = true;
-                return;
-            }
-
             confirmModalConfig.message = 'Are you sure you want to update your profile?';
             confirmModalConfig.buttons = [{label: 'Yes', action: handleUpdate},
                 {label: 'No', action: () => showConfirmModal.value = false}];
@@ -112,6 +126,14 @@ export default defineComponent({name: 'ProfilePage', components: {Navbar, Modal,
         const handleUpdate = async () =>
         {
             showConfirmModal.value = false;
+            const validationError = validateInput();
+            if (validationError)
+            {
+                message.value = validationError;
+                showMessageModal.value = true;
+                return;
+            }
+
             try
             {
                 const payload = {};
@@ -136,7 +158,7 @@ export default defineComponent({name: 'ProfilePage', components: {Navbar, Modal,
                 showMessageModal.value = true;
                 form.currentPassword = '';
                 form.newPassword = '';
-                form.confirmNewPassword = '';
+                form.confirmPassword = '';
             }
         };
 
