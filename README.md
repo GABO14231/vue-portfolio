@@ -14,6 +14,6 @@ Instructions to run both the [frontend](./frontend/README.md) and [backend](./ba
 
 And that's it, you can test this app by just going to the address `https://localhost:5173` in your browser. Keep in mind that you are meant to run both the frontend and backend for the app to work.
 
-![alt text](./src/assets/logo.svg "Title")
+![alt text](./frontend/src/assets/logo.svg "Title")
 
 ## Project made by Gabriel Morazan
