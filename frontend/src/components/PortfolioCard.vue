@@ -12,32 +12,31 @@
                     @click="item.activeTab = 'code'">Code</button>
             </div>
             <div class="tab-content">
-                <div v-if="item.activeTab === 'images'" class="slider-container">
-                    <button v-if="item.images && item.images.length > 1" @click="prevSlide('images')"
-                        class="slider-arrow left-arrow">&lt;</button>
-                    <img :src="item.images[item.currentImageIndex]"
-                        :alt="item.title + ' image ' + (item.currentImageIndex + 1)" class="slider-image"
-                        @click="$emit('zoom-image', item.images[item.currentImageIndex])"
-                        onerror="this.onerror=null;
-                        this.src='/src/assets/placeholder.jpg';"
-                    />
-                    <button v-if="item.images && item.images.length > 1" @click="nextSlide('images')"
-                        class="slider-arrow right-arrow">&gt;</button>
-                </div>
-                <div v-if="item.activeTab === 'videos'" class="video-container">
-                    <div v-if="item.videos">
-                        <video :src="item.videos" controls class="project-video">Your browser does not support the video tag.</video>
+                <button v-if="item.activeTab === 'images' && item.images && item.images.length > 1" @click="prevSlide('images')"
+                    class="slider-arrow left-arrow">&lt;</button>
+                <button v-if="item.activeTab === 'images' && item.images && item.images.length > 1" @click="nextSlide('images')"
+                    class="slider-arrow right-arrow">&gt;</button>
+                <button v-if="item.activeTab === 'code' && item.codeSnippets && item.codeSnippets.length > 1"
+                    @click="prevSlide('code')" class="slider-arrow left-arrow">&lt;</button>
+                <button v-if="item.activeTab === 'code' && item.codeSnippets && item.codeSnippets.length > 1"
+                    @click="nextSlide('code')" class="slider-arrow right-arrow">&gt;</button>
+                <transition :name="slideDirection" mode="out-in">
+                    <div v-if="item.activeTab === 'images'" class="slider-content-wrapper" :key="'image-' + item.currentImageIndex">
+                        <img :src="item.images[item.currentImageIndex]" :alt="item.title + ' image ' + (item.currentImageIndex + 1)"
+                            class="slider-image" @click="$emit('zoom-image', item.images[item.currentImageIndex])"
+                            onerror="this.onerror=null; this.src='/src/assets/placeholder.jpg';"/>
                     </div>
-                    <p v-else>No videos available for this project.</p>
-                </div>
-                <div v-if="item.activeTab === 'code'" class="slider-container">
-                    <button v-if="item.codeSnippets && item.codeSnippets.length > 1"
-                        @click="prevSlide('code')" class="slider-arrow left-arrow">&lt;</button>
-                    <pre class="code-snippet"><code>{{item.codeSnippets[item.currentCodeIndex].code}}</code></pre>
-                    <button v-if="item.codeSnippets && item.codeSnippets.length > 1"
-                        @click="nextSlide('code')" class="slider-arrow right-arrow">&gt;</button>
-                    <p class="code-language">Language: {{item.codeSnippets[item.currentCodeIndex].language}}</p>
-                </div>
+                    <div v-else-if="item.activeTab === 'videos'" class="video-container" key="video-content">
+                        <div v-if="item.video">
+                            <video :src="item.video" controls class="project-video">Your browser does not support the video tag.</video>
+                        </div>
+                        <p v-else>No videos available for this project.</p>
+                    </div>
+                    <div v-else-if="item.activeTab === 'code'" class="slider-content-wrapper" :key="'code-' + item.currentCodeIndex">
+                        <pre class="code-snippet"><code>{{item.codeSnippets[item.currentCodeIndex].code}}</code></pre>
+                        <p class="code-language">Language: {{item.codeSnippets[item.currentCodeIndex].language}}</p>
+                    </div>
+                </transition>
             </div>
         </div>
         <a :href="item.link" target="_blank" rel="noopener noreferrer" class="view-link">View Project</a>
@@ -45,25 +44,72 @@
 </template>
 
 <script>
-import {defineComponent, reactive} from 'vue';
+import {defineComponent, reactive, onMounted, onUnmounted, watch, ref} from 'vue';
 
 export default defineComponent({name: 'PortfolioCard', props: {item: {type: Object, required: true}}, emits: ['zoom-image'],
     setup(props, {emit})
     {
         const item = reactive(props.item);
+        let sliderInterval = null;
+        const slideDirection = ref('slide-left');
+
+        const startSlider = () =>
+        {
+            stopSlider();
+            sliderInterval = setInterval(() =>
+            {
+                if (item.activeTab === 'images' && item.images && item.images.length > 1)
+                {
+                    slideDirection.value = 'slide-left';
+                    nextSlide('images', true);
+                }
+                else if (item.activeTab === 'code' && item.codeSnippets && item.codeSnippets.length > 1)
+                {
+                    slideDirection.value = 'slide-left';
+                    nextSlide('code', true);
+                }
+            }, 4000);
+        };
+
+        const stopSlider = () =>
+        {
+            if (sliderInterval)
+            {
+                clearInterval(sliderInterval);
+                sliderInterval = null;
+            }
+        };
+
         const prevSlide = (type) =>
         {
+            stopSlider();
+            slideDirection.value = 'slide-right';
             if (type === 'images') item.currentImageIndex = (item.currentImageIndex - 1 + item.images.length) % item.images.length;
             else if (type === 'code') item.currentCodeIndex = (item.currentCodeIndex - 1 + item.codeSnippets.length) % item.codeSnippets.length;
-        }
+            startSlider();
+        };
 
-        const nextSlide = (type) =>
+        const nextSlide = (type, isAuto = false) =>
         {
+            if (!isAuto) stopSlider();
+            slideDirection.value = 'slide-left';
             if (type === 'images') item.currentImageIndex = (item.currentImageIndex + 1) % item.images.length;
             else if (type === 'code') item.currentCodeIndex = (item.currentCodeIndex + 1) % item.codeSnippets.length;
-        }
+            if (!isAuto) startSlider();
+        };
 
-        return {item, prevSlide, nextSlide};
+        onMounted(() => startSlider());
+        onUnmounted(() => stopSlider());
+        watch(() => item.activeTab, (newTab, oldTab) =>
+        {
+            if (newTab !== oldTab)
+            {
+                slideDirection.value = 'slide-left';
+                startSlider();
+            }
+        });
+
+        return {item, prevSlide, nextSlide, slideDirection};
     }
 });
 </script>
@@ -87,9 +133,10 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
 .portfolio-card:hover {transform: translateY(-5px);}
 .portfolio-card h4
 {
+    font-size: 1.2em;
     color: #4A90E2;
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .portfolio-card p
@@ -153,15 +200,17 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
     overflow: hidden;
 }
 
-.slider-container
+.slider-content-wrapper
 {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-    position: relative;
-    padding: 0 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0 50px;
     box-sizing: border-box;
 }
 
@@ -210,7 +259,7 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
 {
     background-color: #2a2c30;
     color: #dadada;
-    padding: 20px;
+    padding: 10px;
     border-radius: 5px;
     overflow-x: auto;
     font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -227,7 +276,7 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
     font-size: 0.8em;
     color: #999;
     margin-top: 10px;
-    text-align: right;
+    text-align: center;
 }
 
 .view-link
@@ -239,6 +288,7 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
     border-radius: 5px;
     text-decoration: none;
     font-size: 0.9em;
+    text-align: center;
     transition: background-color 0.3s ease;
     margin-top: 15px;
 }
@@ -254,4 +304,16 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
         font-size: 1em;
     }
 }
+
+.slide-left-enter-active, .slide-left-leave-active, .slide-right-enter-active, .slide-right-leave-active
+{
+    transition: transform 0.5s ease-in-out;
+    position: absolute;
+    width: 100%;
+}
+
+.slide-left-enter-from {transform: translateX(100%);}
+.slide-left-leave-to {transform: translateX(-100%);}
+.slide-right-enter-from {transform: translateX(-100%);}
+.slide-right-leave-to {transform: translateX(100%);}
 </style>
