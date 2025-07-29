@@ -95,55 +95,45 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
             },
             {
                 id: '4',
-                title: 'Personal Blog Site',
-                description: 'A responsive blog platform with a content management system, built using Vue.js and a RESTful API.',
-                link: 'https://github.com/yourusername/blog-site',
+                title: 'Flappy Bird',
+                description: 'A clone of the infamous Flappy Bird game, made with Python.',
+                link: 'https://github.com/GABO14231/flappy-bird-python',
                 activeTab: 'images',
                 currentImageIndex: 0,
                 currentCodeIndex: 0,
-                images: [
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=Blog+Site+Screenshot+1',
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=Blog+Site+Screenshot+2'
-                ],
-                video: [],
-                codeSnippets: [
-                    { language: 'Vue.js', code: '<template>\n  <div class="post-card">\n    <h2>{{ post.title }}</h2>\n    <p>{{ post.excerpt }}</p>\n  </div>\n</template>' },
-                    { language: 'CSS', code: '.post-card {\n  border: 1px solid #eee;\n  padding: 15px;\n  margin-bottom: 20px;\n}' }
-                ]
+                images: ['src/assets/image10.png', 'src/assets/image11.png', 'src/assets/image12.png'],
+                video: 'src/assets/video4.mp4',
+                codeSnippets: [{language: 'Python', code: 'def clamp(n: float, minn: float, maxn: float) -> float: return max(min(maxn, n), minn)'},
+                    {language: 'Python', code: 'import asyncio\nfrom src.flappy import Flappy\n\nif __name__ == "__main__":\n    asyncio.run(Flappy().start())'},
+                    {language: 'Python', code: 'def draw(self) -> None:\n    self.x = -((-self.x + self.vel_x) % self.x_extra)\n    super().draw()'}]
             },
             {
                 id: '5',
-                title: 'Data Visualization Dashboard',
-                description: 'Interactive data visualization of sales trends using D3.js, allowing dynamic filtering and drill-down.',
-                link: 'https://github.com/yourusername/data-viz',
+                title: 'Socket.io Example',
+                description: 'A Node.js/Web App that showcases how Socket.io works.',
+                link: 'https://github.com/GABO14231/Socket.io-Example',
                 activeTab: 'images',
                 currentImageIndex: 0,
                 currentCodeIndex: 0,
-                images: [
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=Data+Viz+Screenshot+1',
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=Data+Viz+Screenshot+2',
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=Data+Viz+Screenshot+3'
-                ],
-                video: [],
-                codeSnippets: [
-                    { language: 'JavaScript', code: 'd3.select("body").append("svg")\n  .attr("width", 500).attr("height", 300)\n  .append("rect")\n  .attr("x", 0).attr("y", 0)\n  .attr("width", 100).attr("height", 50);' }
-                ]
+                images: ['src/assets/image13.png', 'src/assets/image14.png', 'src/assets/image15.png'],
+                video: 'src/assets/video5.mp4',
+                codeSnippets: [{language: 'JavaScript', code: 'socket.on("message", (message) => {displayLogs(`Message from server: ${message}`);});'},
+                    {language: 'JavaScript', code: 'const io = new Server({cors: {origin: "*", methods: ["GET", "POST"]}});\nconst connectedClients = new Map();\nconst screen = blessed.screen({smartCSR: true, title: "Socket.io Server Dashboard"});'},
+                    {language: 'HTML', code: '<div style="display: flex; justify-content: center; gap: 10px">\n    <button class="clearLogButton">Clear Log</button>\n    <button class="disconnectButton">Disconnect</button>\n</div>'}]
             },
             {
                 id: '6',
-                title: 'Mobile Game Development',
-                description: 'Developed a simple 2D mobile game using Unity, featuring touch controls and basic physics.',
-                link: 'https://github.com/yourusername/mobile-game',
+                title: 'FIFO/LIFO/RR Scheduler',
+                description: 'A C++ app that implements the FIFO/LIFO/RR algorithms to schedule some tasks.',
+                link: 'https://github.com/GABO14231/FIFO-LIFO-RR-App',
                 activeTab: 'images',
                 currentImageIndex: 0,
                 currentCodeIndex: 0,
-                images: [
-                    'https://placehold.co/600x400/4A90E2/ffffff?text=Mobile+Game+Screenshot+1'
-                ],
-                videos: ['https://www.w3schools.com/html/movie.mp4'],
-                codeSnippets: [
-                    { language: 'C#', code: 'public class PlayerController : MonoBehaviour\n{\n  public float speed = 5f;\n  void Update()\n  {\n    float move = Input.GetAxis("Horizontal");\n    transform.Translate(Vector3.right * move * speed * Time.deltaTime);\n  }\n}' }
-                ]
+                images: ['src/assets/image16.png', 'src/assets/image17.png', 'src/assets/image18.png'],
+                video: 'src/assets/video6.mp4',
+                codeSnippets: [{language: 'C++', code: 'bool allProcessesFinished()\n{\n    for (const auto &p : arr) if (p.tf == 0) return false;\n    return true;\n}'},
+                    {language: 'C++', code: 'for (int i = 0; i < (clock_values.size() - 1); i++) cout << clock_values[i] << ", ";\ncout << clock_values[clock_values.size() - 1] << endl;\neffective[1] = (i_avg * 100);\nclock_values.clear();'},
+                    {language: 'C++', code: 'struct Processes\n{\n    string processes;\n    int ti, t, tf, T, E;\n    float I;\n};'}]
             }
         ]);
 
@@ -158,7 +148,7 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
             {
                 console.error(`Logout failed: ${err}`);
                 message.value = 'Logout failed. Please try again.';
-                modalButtons.value = [{ label: 'Close', action: clearMessage }];
+                modalButtons.value = [{label: 'Close', action: clearMessage}];
             }
         }
 
@@ -179,8 +169,8 @@ export default defineComponent({name: 'DashboardPage', components: {Navbar, Moda
             if (skillsBarChart) skillsBarChart.destroy();
             if (skillsPieChart) skillsPieChart.destroy();
 
-            const labels = ['Vue.js', 'JavaScript', 'HTML/CSS', 'Node.js', 'Databases', 'Python'];
-            const data = [90, 85, 95, 75, 70, 60];
+            const labels = ['JavaScript', 'HTML/CSS', 'Node.js', 'Python', 'C++', 'C'];
+            const data = [95, 90, 95, 70, 80, 75];
             const backgroundColors = ['rgba(74, 144, 226, 0.8)', 'rgba(240, 219, 79, 0.8)',
                 'rgba(227, 79, 40, 0.8)', 'rgba(104, 160, 99, 0.8)', 'rgba(128, 0, 128, 0.8)',
                 'rgba(59, 130, 246, 0.8)'];
