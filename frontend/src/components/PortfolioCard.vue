@@ -130,7 +130,6 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
     position: relative;
 }
 
-.portfolio-card:hover {transform: translateY(-5px);}
 .portfolio-card h4
 {
     font-size: 1.2em;
@@ -266,7 +265,7 @@ export default defineComponent({name: 'PortfolioCard', props: {item: {type: Obje
     font-size: 0.85em;
     white-space: pre-wrap;
     word-break: break-word;
-    width: calc(100% - 40px);
+    width: calc(100% - 30px);
     max-height: 280px;
     box-sizing: border-box;
 }
