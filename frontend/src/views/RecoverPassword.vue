@@ -51,7 +51,7 @@ export default defineComponent({name: 'RecoverPasswordPage', components: {Modal,
         {
             if (((newPassword.value !== "") && (confirmPassword.value === "")) || ((confirmPassword.value !== "") && (newPassword.value === ""))) return "Please enter your new password twice."
             if ((newPassword.value.length < 6) || (confirmPassword.value.length < 6)) return "Password must be at least 6 characters.";
-            if (newPassword !== confirmPassword) return "The passwords do not match."
+            if (newPassword.value !== confirmPassword.value) return "The passwords do not match."
 
             return "";
         };
